@@ -12,9 +12,15 @@ public class GetMonthlyTemperatures {
    
    // Simple method to print the month and temperature.
    // This is a private method because it should not be called outside of local usage
-   private void PrintMonth(String month, double temperature) {
-      System.out.println("Month: " + month);
-      System.out.printf("Average Temperature: %.1f", temperature);
+   private static void PrintMonth(String month, double temperature, boolean verbose) {
+      if(verbose) {
+         System.out.println("Month: " + month);
+         System.out.printf("Average Temperature: %.1f\n", temperature);
+      }
+      else {
+         System.out.printf("%s: %.1f\n", month, temperature);
+      }
+
    }
    
    public static void main(String[] args) {
@@ -28,6 +34,7 @@ public class GetMonthlyTemperatures {
       
       // Declare integers to keep track of array index locations for month, max, and min temperatures
       int monthIndex, maxTempIndex, minTempIndex;
+      monthIndex = maxTempIndex = minTempIndex = 0;
       
       // Declare and initialize the running total for yearly average calculation
       double tempTotal = 0;
@@ -68,22 +75,70 @@ public class GetMonthlyTemperatures {
             if (userInput.toLowerCase().compareTo(monthArray[i].toLowerCase()) == 0) {
                validateInput = true;
                enteredYear = false;
+               
+               // Set the monthIndex for later use
                monthIndex = i;
+               
+               // Break out if a valid month is entered
                break;
             }
-            else if (userInput.toLowerCase().compareTo("year") == 0){
+            
+            // Check for "year" in the user input if month has not matched
+            if (userInput.toLowerCase().compareTo("year") == 0){
                validateInput = true;
                enteredYear = true;
+               
+               // Break out if "year" is entered
                break;
             }
          }
          
+         // Feedback to user if they don't type something valid
          if (!validateInput) {
             System.out.println("Invalid input. Please try again!");
          }
          
+      // Go back to the DO statement until userInput contains a valid response
       } while (!validateInput);
       
-      
+      // Print the month and average temperature for that month if "year" wasn't entered
+      if (!enteredYear) {
+         System.out.println();
+         PrintMonth(monthArray[monthIndex], temperatureArray[monthIndex], true);
+      }
+      else {
+         System.out.println("\nTemperatures for the Year");
+         System.out.println("__________");
+         // Loop through and print the temperatures for the whole year
+         for (int i = 0; i < monthArray.length; i++) {
+            // Running total
+            tempTotal += temperatureArray[i];
+            
+            // Initialize maxTemp and minTemp to the first element in the array
+            if (i == 0) {
+               maxTempIndex = i;
+               minTempIndex = i;
+            }
+            else {
+               // Set the max and min temperatures if comparisons succeed
+               if (temperatureArray[maxTempIndex] < temperatureArray[i]) {
+                  maxTempIndex = i;
+               }
+               if (temperatureArray[minTempIndex] > temperatureArray[i]) {
+                  minTempIndex = i;
+               }
+            }
+            
+            // Print out the month and temperature
+            PrintMonth(monthArray[i], temperatureArray[i], false);
+
+         }
+         System.out.println("__________");
+         System.out.printf("Yearly Average: %.1f\n", tempTotal / temperatureArray.length);
+         System.out.printf("Maximum Temperature: %.1f (%s)\n", temperatureArray[maxTempIndex], monthArray[maxTempIndex]);
+         System.out.printf("Minimum Temperature: %.1f (%s)\n", temperatureArray[minTempIndex], monthArray[minTempIndex]);
+      }
+      System.out.println("\nData from U.S. National Weather Service (https://www.weather.gov)\n"
+            + "Temperatures are based on averages from 2023 for Everett, WA.");
    }
 }
