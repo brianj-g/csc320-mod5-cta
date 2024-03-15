@@ -1,0 +1,116 @@
+/* Module 5 CTA | Option 2: Get Monthly Temperatures
+ * Develop a Java program that will store data in the form of monthly temperatures for a year. 
+ * Store the month and temperature in two different arrays. 
+ * Your program should prompt the user for the month to be viewed and display both the month and average temperature. 
+ * If "year" is entered, the output for your program should provide the temperature for each month along with the 
+ * yearly average as well as the highest and lowest monthly averages. Use the looping and decision constructs 
+ * in combination with the arrays to complete this assignment.
+ */
+
+/* Section 0: Define ancillary methods
+// Simple method to print the month and temperature output
+METHOD PrintMonth: No return type
+   Parameters: String month; Double temperature
+   PRINT: "Month: {month}"
+   PRINT: "Average temperature: {temperature}"
+
+/* Section 1: Define variables and constants */
+
+[variable] userInput: String
+
+[variable] validateInput: boolean
+Initialize validateInput to FALSE  // This is for efficiency to avoid an unecessary assignment in the DO-WHILE loop body
+
+[variable] enteredYear: boolean
+
+[variable] monthIndex: integer
+[variable] maxTempIndex: integer
+[variable] minTempIndex: integer
+[variable] tempTotal: double
+Initialize tempTotal to 0
+
+
+// Month array holds the names of the months as strings
+
+[constant] monthArray: Array (Size: 12, Type: String)
+Initialize monthArray with: {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
+ 
+// Temperature array holds the average temperature for all twelve months.
+// Referenced by index number that matches the index for the month in monthArray.
+// Temperatures are taken from the 2023 monthly average temperatures for Everett, WA (https://www.weather.gov)
+ 
+[constant] temperatureArray: Array (Size: 12, Type: Double)
+Initialize temperatureArray with: {42.5,  40.5,  43.5,  48.6,  61.6,  61.6,  67.0,  68.0,  61.1,  54.2,  44.5,  44.2}
+ 
+/* Section 2: User input and validation */
+
+// Prompt the user for initial input of month.  Perform input validation to ensure a correct month is chosen.
+// Use a do/while loop to re-prompt if incorrect input is received
+DO: 
+   PRINT: "Enter the name of a month (e.g., January), or type the word "year" to print all months: "
+   SET userInput = CONSOLE INPUT
+   
+   // A for loop is used to cycle through the monthArray elements to ensure the input matches a value
+   FOR LOOP: (integer i = 0; i < Length of monthArray; i = i + 1)
+      // validateInput remains FALSE if the input does not match any element and does not match the word "year"
+      // In code, the comparisons should be done after converting to lowercase to account for case mismatches.
+      IF: userInput matches monthArray[i]  
+         THEN: SET validateInput = TRUE
+               SET enteredYear = FALSE
+               SET monthIndex = i
+               BREAK (exit FOR loop) 
+      ELSEIF: userInput matches "year"
+         THEN: SET validateInput = TRUE
+               SET enteredYear = TRUE
+               BREAK (exit FOR loop)
+   END FOR LOOP
+   // Feedback to user if they don't type something valid
+   IF: validateInput is FALSE
+   THEN:
+      PRINT: "Invalid input. Please try again!"
+
+// Go back to the DO statement until userInput contains a valid response
+WHILE: validateInput is FALSE
+
+/* Section 3: Program logic and output */
+
+// Sanity check for the user's benefit
+PRINT: You entered: {userInput}.
+
+IF NOT enteredYear:
+   // Print the month entered and the average temperature for that month, based on the monthIndex variable
+   CALL PrintMonth: monthArray[monthIndex], temperatureArray[monthIndex]
+ELSE:
+   PRINT: "Printing the temperatures for the whole year"
+   // Print the average temperatures for each month using a FOR loop
+   FOR LOOP: (integer i = 0; i < Length of monthArray; i = i + 1)
+      SET tempTotal = tempTotal + temperatureArray[i]
+      IF i is 0:
+         // Initialize maxTemp and minTemp to the first element of the array to establish baseline
+         SET maxTempIndex = i
+         SET minTempIndex = i
+      ELSE:
+         // Set the max and min if comparisons are true
+         IF: tempArray[maxTempIndex] < tempArray[i]:
+            THEN: maxTempIndex = i
+         IF: tempArray[minTempIndex] > tempArray[i]:
+            THEN: minTempIndex = i
+      
+      CALL PrintMonth: monthArray[i], temperatureArray[i]
+   END FOR LOOP
+   
+   // Print the maximum and minimum temperatures with the month, using the max/min index values
+   PRINT: "Yearly average: {tempTotal / Length of temperatureArray}"
+   PRINT: "Maximum temperature: {temperatureArray[maxTempIndex]} ({monthArray[maxTempIndex]})
+   PRINT: "Minimum temperature: {temperatureArray[minTempIndex]} ({monthArray[minTempIndex]})
+      
+ 
+   
+      
+
+
+      
+ 
+ 
+ 
+ 
