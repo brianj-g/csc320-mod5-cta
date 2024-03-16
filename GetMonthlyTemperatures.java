@@ -10,8 +10,10 @@ import java.util.Scanner;
 
 public class GetMonthlyTemperatures {
    
-   // Simple method to print the month and temperature.
-   // This is a private method because it should not be called outside of local usage
+   /* Simple method to print the month and temperature.
+    * This is a private method because it should not be called outside of local usage.
+    * The "verbose" parameter is included to optionally print a multiline formatted output.
+    */
    private static void PrintMonth(String month, double temperature, boolean verbose) {
       if(verbose) {
          System.out.println("Month: " + month);
@@ -38,6 +40,12 @@ public class GetMonthlyTemperatures {
       
       // Declare and initialize the running total for yearly average calculation
       double tempTotal = 0;
+      
+      
+      /* Initialize arrays for month names and temperature values.
+      * These are created as final so that the structure cannot be 
+      * re-initialized (though it should be noted that the values may be changed).
+      */
       
       // Month array holds the names of the months as strings
       final String[] monthArray = new String[] {
@@ -101,13 +109,13 @@ public class GetMonthlyTemperatures {
       // Go back to the DO statement until userInput contains a valid response
       } while (!validateInput);
       
-      // Print the month and average temperature for that month if "year" wasn't entered
+      // Print the month and average temperature for that month if "year" wasn't entered (verbose flag set)
       if (!enteredYear) {
          System.out.println();
          PrintMonth(monthArray[monthIndex], temperatureArray[monthIndex], true);
       }
       else {
-         System.out.println("\nTemperatures for the Year");
+         System.out.println("\nMonthly Averages");
          System.out.println("__________");
          // Loop through and print the temperatures for the whole year
          for (int i = 0; i < monthArray.length; i++) {
@@ -129,14 +137,18 @@ public class GetMonthlyTemperatures {
                }
             }
             
-            // Print out the month and temperature
+            // Print out the month and temperature (non-verbose)
             PrintMonth(monthArray[i], temperatureArray[i], false);
 
          }
          System.out.println("__________");
+         
+         // Compute the average using the running total (tempTotal) and the size of the array (12)
          System.out.printf("Yearly Average: %.1f\n", tempTotal / temperatureArray.length);
-         System.out.printf("Maximum Temperature: %.1f (%s)\n", temperatureArray[maxTempIndex], monthArray[maxTempIndex]);
-         System.out.printf("Minimum Temperature: %.1f (%s)\n", temperatureArray[minTempIndex], monthArray[minTempIndex]);
+         
+         // Print out the max and min temperatures and monthj
+         System.out.printf("Monthly Maximum: %.1f (%s)\n", temperatureArray[maxTempIndex], monthArray[maxTempIndex]);
+         System.out.printf("Monthly Minimum: %.1f (%s)\n", temperatureArray[minTempIndex], monthArray[minTempIndex]);
       }
       System.out.println("\nData from U.S. National Weather Service (https://www.weather.gov)\n"
             + "Temperatures are based on averages from 2023 for Everett, WA.");
