@@ -14,7 +14,7 @@ public class GetMonthlyTemperatures {
     * This is a private method because it should not be called outside of local usage.
     * The "verbose" parameter is included to optionally print a multiline formatted output.
     */
-   private static void PrintMonth(String month, double temperature, boolean verbose) {
+   private static void printMonth(String month, double temperature, boolean verbose) {
       if(verbose) {
          System.out.println("Month: " + month);
          System.out.printf("Average Temperature: %.1f\n", temperature);
@@ -112,7 +112,7 @@ public class GetMonthlyTemperatures {
       // Print the month and average temperature for that month if "year" wasn't entered (verbose flag set)
       if (!enteredYear) {
          System.out.println();
-         PrintMonth(monthArray[monthIndex], temperatureArray[monthIndex], true);
+         printMonth(monthArray[monthIndex], temperatureArray[monthIndex], true);
       }
       else {
          System.out.println("\nMonthly Averages");
@@ -138,7 +138,7 @@ public class GetMonthlyTemperatures {
             }
             
             // Print out the month and temperature (non-verbose)
-            PrintMonth(monthArray[i], temperatureArray[i], false);
+            printMonth(monthArray[i], temperatureArray[i], false);
 
          }
          System.out.println("__________");
