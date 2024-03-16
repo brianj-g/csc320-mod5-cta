@@ -91,9 +91,9 @@ ELSE:
          SET minTempIndex = i
       ELSE:
          // Set the max and min if comparisons are true
-         IF: tempArray[maxTempIndex] < tempArray[i]:
+         IF: temperatureArray[maxTempIndex] < temperatureArray[i]:
             THEN: maxTempIndex = i
-         IF: tempArray[minTempIndex] > tempArray[i]:
+         IF: temperatureArray[minTempIndex] > temperatureArray[i]:
             THEN: minTempIndex = i
       
       CALL PrintMonth: monthArray[i], temperatureArray[i]
